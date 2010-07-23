@@ -7,6 +7,7 @@ from math import log
 from collections import defaultdict
 import urllib
 import sys
+from time import sleep
 
 currencies = """
 Eurozone Euro EUR
@@ -51,13 +52,17 @@ def get_exchange_rate(src, dst, api_key):
     """
     site = "http://www.exchangerate-api.com/%s/%s?k=%s"
     site = site % (src,dst,api_key)
-    print site
-    url = urllib.urlopen(site)
-    result = url.read()
+    #print site
+    try:
+        url = urllib.urlopen(site)
+        result = url.read()
+    except IOError,e:
+        print e
+        sys.exit(-1)
     return result.strip()
 
 api_key = sys.stdin.readline().strip()
-print api_key
+#print api_key
 
 symbols = []
 for line in currencies.split("\n"):
@@ -65,8 +70,8 @@ for line in currencies.split("\n"):
     if elements:
         symbols.append(elements[-1])
 
-print symbols
-print len(symbols)
+#print symbols
+#print len(symbols)
 
 graph = defaultdict(dict)
 
@@ -75,8 +80,11 @@ for a in symbols:
         if a == b:
             continue
         graph[a][b] = get_exchange_rate(a,b,api_key)
+        sleep(1)
+        print "%s, %s, %.2f" % (a,b,float(graph[a][b]))
 
-print graph
+#print graph
 for src in graph:
     for dst in graph[src]:
-        print "1 %s buys %.2f %s" % (src,graph[src][dst],dst)
+        pass
+        #print "1 %s buys %.2f %s" % (src,graph[src][dst],dst)

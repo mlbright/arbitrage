@@ -7,9 +7,6 @@ from math import log
 import urllib
 import sys
 
-api_key = "RjV5i-dRQLT-7WXLH"
-site = "http://www.exchangerate-api.com/%s/%s/%f?k=%s"
-
 currencies = """
 Eurozone Euro EUR
 United States US Dollar USD
@@ -46,6 +43,12 @@ Thailand Thai Baht THB
 South Africa South African Rand ZAR
 """
 
+def get_exchange_rate(from_cur, to_cur):
+    site = "http://www.exchangerate-api.com/%s/%s?k=%s"
+    url = urllib.urlopen(site % (from_c,to_c,api_key))
+    result = url.read()
+    return result.strip()
+
 symbols = []
 for line in currencies.split("\n"):
     elements = line.strip().split()
@@ -53,12 +56,14 @@ for line in currencies.split("\n"):
         symbols.append(elements[-1])
 
 print symbols
+print len(symbols)
 
-sys.exit()
+graph = {}
 
-from_c = "usd"
-to_c = "gbp"
-amount = 12.50
-url = urllib.urlopen(site % (from_c,to_c,amount,api_key))
-result = url.read()
-print result
+for a in symbols:
+    for b in symbols:
+        pass
+        
+if __name__ == "__main__":
+    key = sys.stdin.readline().strip()
+    print key

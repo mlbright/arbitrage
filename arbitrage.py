@@ -44,11 +44,20 @@ Thailand Thai Baht THB
 South Africa South African Rand ZAR
 """
 
-def get_exchange_rate(from_cur, to_cur):
+def get_exchange_rate(src, dst, api_key):
+    """
+    how many Japanese Yen there are to the Dollar?
+    http://www.exchangerate-api.com/USD/JPY?k=API_KEY
+    """
     site = "http://www.exchangerate-api.com/%s/%s?k=%s"
-    url = urllib.urlopen(site % (from_c,to_c,api_key))
+    site = site % (src,dst,api_key)
+    print site
+    url = urllib.urlopen(site)
     result = url.read()
     return result.strip()
+
+api_key = sys.stdin.readline().strip()
+print api_key
 
 symbols = []
 for line in currencies.split("\n"):
@@ -63,10 +72,11 @@ graph = defaultdict(dict)
 
 for a in symbols:
     for b in symbols:
-        graph[a][b] = 1
+        if a == b:
+            continue
+        graph[a][b] = get_exchange_rate(a,b,api_key)
 
 print graph
-        
-if __name__ == "__main__":
-    key = sys.stdin.readline().strip()
-    print key
+for src in graph:
+    for dst in graph[src]:
+        print "1 %s buys %.2f %s" % (src,graph[src][dst],dst)

@@ -4,6 +4,7 @@ http://shriphani.com/blog/2010/07/02/bellman-ford-algorithms-applications-triang
 
 from bellman_ford import bellman_ford
 from math import log
+from collections import defaultdict
 import urllib
 import sys
 
@@ -58,11 +59,13 @@ for line in currencies.split("\n"):
 print symbols
 print len(symbols)
 
-graph = {}
+graph = defaultdict(dict)
 
 for a in symbols:
     for b in symbols:
-        pass
+        graph[a][b] = 1
+
+print graph
         
 if __name__ == "__main__":
     key = sys.stdin.readline().strip()

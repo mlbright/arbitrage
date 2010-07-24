@@ -73,6 +73,8 @@ for line in currencies.split("\n"):
     if elements:
         symbols.append(elements[-1])
 
+print symbols
+
 graph = defaultdict(dict)
 
 for a in symbols:
@@ -85,6 +87,8 @@ for a in symbols:
             if rate > 0:
                 print "%s, %s, %.2f" % (a,b,rate)
                 graph[a][b] = log(1/rate)
+        else:
+            print "could not get rate for %s => %s" % (a,b)
 
 print graph
 for cur in symbols:

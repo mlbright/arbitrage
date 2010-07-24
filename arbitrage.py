@@ -85,11 +85,11 @@ for a in symbols:
             if rate > 0:
                 print "%s, %s, %.2f" % (a,b,rate)
                 graph[a][b] = log(1/rate)
-        #sleep(1)
 
+print graph
 for cur in symbols:
-    d,p,cur = bellman_ford(graph,cur)
-    if cur:
-        print "%s makes money" % (cur)
+    d,p,result = bellman_ford(graph,cur)
+    if result is None:
+        print "%s does not make money" % (result)
     else:
-        print "%s does not make money" % (cur)
+        print "%s makes money" % (result)

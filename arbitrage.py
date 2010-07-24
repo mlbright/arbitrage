@@ -56,10 +56,9 @@ def get_exchange_rate(src, dst, api_key):
     try:
         url = urllib.urlopen(site)
         result = url.read()
+        return result.strip()
     except IOError,e:
-        print e
-        sys.exit(-1)
-    return result.strip()
+        return None
 
 api_key = sys.stdin.readline().strip()
 #print api_key
@@ -79,9 +78,11 @@ for a in symbols:
     for b in symbols:
         if a == b:
             continue
-        graph[a][b] = get_exchange_rate(a,b,api_key)
+        rate = get_exchange_rate(a,b,api_key)
+        if rate:
+            graph[a][b] = get_exchange_rate(a,b,api_key)
+            print "%s, %s, %.2f" % (a,b,float(graph[a][b]))
         sleep(1)
-        print "%s, %s, %.2f" % (a,b,float(graph[a][b]))
 
 #print graph
 for src in graph:

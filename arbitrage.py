@@ -45,6 +45,12 @@ Thailand Thai Baht THB
 South Africa South African Rand ZAR
 """
 
+def find_cycle(prev,dst):
+    edges = []
+    while dst != src:
+        src = prev[dst]
+        edges.append((src,dst))
+    
 def get_exchange_rate(src, dst, api_key):
     """
     how many Japanese Yen there are to the Dollar?
@@ -76,12 +82,14 @@ for a in symbols:
         rate = get_exchange_rate(a,b,api_key)
         if rate:
             rate = float(rate)
-            print "%s, %s, %.2f" % (a,b,rate)
-            graph[a][b] = log(1/rate)
-        sleep(1)
+            if rate > 0:
+                print "%s, %s, %.2f" % (a,b,rate)
+                graph[a][b] = log(1/rate)
+        #sleep(1)
 
 for cur in symbols:
-    try:
-        d,p = bellman_ford(graph,cur)
-    except:
-        print "buying %s makes you money" % (cur)
+    d,p,cur = bellman_ford(graph,cur)
+    if cur:
+        print "%s makes money" % (cur)
+    else:
+        print "%s does not make money" % (cur)

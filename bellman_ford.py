@@ -32,8 +32,11 @@ def bellman_ford(graph, source):
                 relax(u, v, graph, d, p)
     for u in graph:
         for v in graph[u]:
-            assert d[v] <= d[u] + graph[u][v]
-    return d, p
+            if d[v] <= (d[u] + graph[u][v]):
+                pass
+            else:
+                d,p,source
+    return d, p, None
 
 def test():
     
@@ -45,7 +48,7 @@ def test():
         'e': {'d': -3}
         }
     
-    d, p = bellman_ford(graph, 'a')
+    d, p, _ = bellman_ford(graph, 'a')
     
     assert d == {
         'a':  0,

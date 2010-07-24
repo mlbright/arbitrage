@@ -52,7 +52,6 @@ def get_exchange_rate(src, dst, api_key):
     """
     site = "http://www.exchangerate-api.com/%s/%s?k=%s"
     site = site % (src,dst,api_key)
-    #print site
     try:
         url = urllib.urlopen(site)
         result = url.read()
@@ -61,16 +60,12 @@ def get_exchange_rate(src, dst, api_key):
         return None
 
 api_key = sys.stdin.readline().strip()
-#print api_key
 
 symbols = []
 for line in currencies.split("\n"):
     elements = line.strip().split()
     if elements:
         symbols.append(elements[-1])
-
-#print symbols
-#print len(symbols)
 
 graph = defaultdict(dict)
 
@@ -80,12 +75,13 @@ for a in symbols:
             continue
         rate = get_exchange_rate(a,b,api_key)
         if rate:
-            graph[a][b] = get_exchange_rate(a,b,api_key)
-            print "%s, %s, %.2f" % (a,b,float(graph[a][b]))
+            rate = float(rate)
+            print "%s, %s, %.2f" % (a,b,rate)
+            graph[a][b] = log(1/rate)
         sleep(1)
 
-#print graph
-for src in graph:
-    for dst in graph[src]:
-        pass
-        #print "1 %s buys %.2f %s" % (src,graph[src][dst],dst)
+for cur in symbols:
+    try:
+        d,p = bellman_ford(graph,cur)
+    except:
+        print "buying %s makes you money" % (cur)

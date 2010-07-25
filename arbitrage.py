@@ -9,6 +9,8 @@ import urllib
 import sys
 from time import sleep
 
+api_key = sys.stdin.readline().strip()
+
 currencies = """
 Eurozone Euro EUR
 United States US Dollar USD
@@ -63,9 +65,15 @@ def get_exchange_rate(src, dst, api_key):
         result = url.read()
         return result.strip()
     except IOError,e:
+        print "could not get rate for %s => %s" % (a,b)
         return None
 
-api_key = sys.stdin.readline().strip()
+rates = defaultdict(dict)
+fd = open("test_data")
+for line in fd:
+    src,dst,weight = line.strip().split(',')
+    rates[src.strip()][dst.strip()] = weight.strip()
+fd.close()
 
 symbols = []
 for line in currencies.split("\n"):
@@ -73,27 +81,48 @@ for line in currencies.split("\n"):
     if elements:
         symbols.append(elements[-1])
 
-print symbols
-
 graph = defaultdict(dict)
 
 for a in symbols:
     for b in symbols:
         if a == b:
             continue
-        rate = get_exchange_rate(a,b,api_key)
+        #rate = get_exchange_rate(a,b,api_key)
+        if a in rates and b in rates[a]:
+            rate = rates[a][b]
+        else:
+            continue
         if rate:
             rate = float(rate)
-            if rate > 0:
+            if rate != 0.0:
                 print "%s, %s, %.2f" % (a,b,rate)
                 graph[a][b] = log(1/rate)
-        else:
-            print "could not get rate for %s => %s" % (a,b)
+            else:
+                continue
 
-print graph
-for cur in symbols:
-    d,p,result = bellman_ford(graph,cur)
+def construct_path(previous,end):
+    path = []
+    start = end
+    while True:
+        path.append(end)
+        if end == start and len(path) > 1:
+            break
+        if end in previous:
+            end = previous[end]
+        else:
+            return None
+    path.reverse()
+    return path
+
+for src in symbols:
+    print src 
+    d,p,result = bellman_ford(graph,src)
     if result is None:
         print "%s does not make money" % (result)
     else:
         print "%s makes money" % (result)
+        path = construct_path(p,result)
+        if path:
+            print path
+        else:
+            print "wtf"

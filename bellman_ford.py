@@ -33,8 +33,8 @@ def bellman_ford(graph, source):
     for u in graph:
         for v in graph[u]:
             if d[v] > (d[u] + graph[u][v]):
-                d[v] = d[u] + graph[u][v]
-                p[v] = u
+                #d[v] = d[u] + graph[u][v]
+                #p[v] = u
                 return d,p,v
     return d,p,None
 
@@ -66,4 +66,5 @@ def test():
         'e': 'b'
         }
 
-if __name__ == '__main__': test()
+if __name__ == '__main__':
+    test()

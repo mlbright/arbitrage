@@ -9,6 +9,8 @@ import urllib
 import sys
 from time import sleep
 
+# ---------------------------------------------------------------------------- #
+
 api_key = sys.stdin.readline().strip()
 
 currencies = """
@@ -47,12 +49,6 @@ Thailand Thai Baht THB
 South Africa South African Rand ZAR
 """
 
-def find_cycle(prev,dst):
-    edges = []
-    while dst != src:
-        src = prev[dst]
-        edges.append((src,dst))
-    
 def get_exchange_rate(src, dst, api_key):
     """
     how many Japanese Yen there are to the Dollar?
@@ -67,6 +63,20 @@ def get_exchange_rate(src, dst, api_key):
     except IOError,e:
         print "could not get rate for %s => %s" % (a,b)
         return None
+
+def construct_path(previous,end):
+    path = []
+    start = end
+    while True:
+        path.append(end)
+        if end == start and len(path) > 1:
+            break
+        if end in previous:
+            end = previous[end]
+        else:
+            return None
+    path.reverse()
+    return path
 
 rates = defaultdict(dict)
 fd = open("test_data")
@@ -100,29 +110,9 @@ for a in symbols:
             else:
                 continue
 
-def construct_path(previous,end):
-    path = []
-    start = end
-    while True:
-        path.append(end)
-        if end == start and len(path) > 1:
-            break
-        if end in previous:
-            end = previous[end]
-        else:
-            return None
-    path.reverse()
-    return path
-
 for src in symbols:
-    print src 
-    d,p,result = bellman_ford(graph,src)
-    if result is None:
-        print "%s does not make money" % (result)
-    else:
-        print "%s makes money" % (result)
-        path = construct_path(p,result)
-        if path:
-            print path
-        else:
-            print "wtf"
+    print src,
+    try:
+        d,p = bellman_ford(graph,src)
+    except AssertionError:
+        print src

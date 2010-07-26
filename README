@@ -1,0 +1,4 @@
+Only detects presence of negative weight cycle, not what that negative cycle is.
+There's almost always a negative weight cycle, and in practice this
+algorithm is useless, as indicated by the author of the blog post that 
+inspired this code.

@@ -32,6 +32,17 @@ def bellman_ford(graph, source):
                 relax(u, v, graph, d, p)
     for u in graph:
         for v in graph[u]:
+            assert d[v] <= d[u] + graph[u][v]
+    return d,p
+
+def negative_cycle(graph, source):
+    d, p = initialize(graph, source)
+    for i in range(len(graph)-1):
+        for u in graph:
+            for v in graph[u]:
+                relax(u, v, graph, d, p)
+    for u in graph:
+        for v in graph[u]:
             if d[v] > (d[u] + graph[u][v]):
                 #d[v] = d[u] + graph[u][v]
                 #p[v] = u
@@ -48,7 +59,7 @@ def test():
         'e': {'d': -3}
         }
     
-    d, p, _ = bellman_ford(graph, 'a')
+    d, p = bellman_ford(graph, 'a')
     
     assert d == {
         'a':  0,

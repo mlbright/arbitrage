@@ -44,10 +44,8 @@ def negative_cycle(graph, source):
     for u in graph:
         for v in graph[u]:
             if d[v] > (d[u] + graph[u][v]):
-                #d[v] = d[u] + graph[u][v]
-                #p[v] = u
-                return d,p,v
-    return d,p,None
+                return True
+    return False
 
 def test():
     

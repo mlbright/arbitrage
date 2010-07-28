@@ -15,26 +15,22 @@ def negative_weight_cycle(previous,start,end):
     while True:
         path.append(end)
         if end == start:
-            print "reached v..."
-        if end in path:
+            path.reverse()
+            return path
+        if path.count(end) > 1:
             path = path[path.index(end):]
-            break
+            path.reverse()
+            return path
         end = previous[end]
-    path.reverse()
-    return path
 
 rates = defaultdict(dict)
+symbols = set()
 fd = open("test_data")
 for line in fd:
     src,dst,weight = line.strip().split(',')
+    symbols.add(src)
     rates[src.strip()][dst.strip()] = weight.strip()
 fd.close()
-
-symbols = []
-for line in currencies.split("\n"):
-    elements = line.strip().split()
-    if elements:
-        symbols.append(elements[-1])
 
 graph = defaultdict(dict)
 
@@ -49,12 +45,17 @@ for a in symbols:
         if rate:
             rate = float(rate)
             if rate != 0.0:
-                print "%s, %s, %.2f" % (a,b,rate)
+                #print "%s, %s, %.2f" % (a,b,rate)
                 graph[a][b] = log(1/rate)
             else:
                 continue
 
 for src in symbols:
-    d,p,cycle = bellman_ford(graph,src)
+    distances,previous,cycle = bellman_ford(graph,src)
     if cycle:
-        print negative_weight_cycle(p,src,src)
+        for dst in distances:
+            if dst == src:
+                continue
+            path = negative_weight_cycle(previous,src,dst)
+            print "%s %s" % (src,dst)
+            print path

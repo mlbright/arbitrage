@@ -57,7 +57,7 @@ def get_exchange_rate(src, dst, api_key):
         print "could not get rate for %s => %s" % (a,b)
         return None
 
-fd = open("test_data", "w+")
+fd = open("test_data", "w")
 
 symbols = []
 for line in currencies.split("\n"):

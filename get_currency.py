@@ -57,8 +57,6 @@ def get_exchange_rate(src, dst, api_key):
         print "could not get rate for %s => %s" % (a,b)
         return None
 
-fd = open("test_data", "w")
-
 symbols = []
 for line in currencies.split("\n"):
     elements = line.strip().split()
@@ -73,8 +71,6 @@ for a in symbols:
         if rate is not None:
             rate = float(rate)
             if rate != 0.0:
-                fd.write("%s, %s, %.2f\n" % (a,b,rate))
+                print("%s, %s, %.6f" % (a,b,rate))
             else:
                 continue
-
-fd.close()

@@ -4,3 +4,11 @@ not what that negative cycle is.
 There's almost always a negative weight cycle, and in practice this
 algorithm is useless, as indicated by the author of the blog post that 
 inspired this code.
+
+This is a solution to problem presented in the textbook "Introduction to 
+Algorithms", by Cormen, Leiserson, Rivest, Stein,
+in its chapter on the single-source shortest paths problem. To explain the
+problem in terms of the Bellman-Ford algorithm, it is to:
+
+- detect the existence of a negative cycle in the currency graph
+- produce the path of a cycle (any cycle, not all cycles)

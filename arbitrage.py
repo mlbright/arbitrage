@@ -10,42 +10,42 @@ import sys
 # ---------------------------------------------------------------------------- #
 
 def find_path(predecessor,start,end):
+    """ assumes path exists from start to end """
     path = []
     while True:
         path.append(end)
         if end == start:
-            print "found simple path..."
             path.reverse()
             return path
+        end = predecessor[end]
+
+def negative_weight_cycle(predecessor,end):
+    path = []
+    while True:
+        path.append(end)
         if path.count(end) > 1:
-            print "found cycle!"
-            cycle = path[path.index(end):]
-            cycle.reverse()
-            return cycle 
+            path.reverse()
+            return path
         end = predecessor[end]
 
 symbols = set()
 graph = defaultdict(dict)
 for line in sys.stdin:
-    src,dst,weight = line.strip().split(',')
+    src,dst,weight = (s.strip() for s in line.split(','))
     symbols.add(src)
     symbols.add(dst)
-    rate = float(weight.strip())
+    rate = float(weight)
     if rate != 0.0:
-        graph[src.strip()][dst.strip()] = log(1/rate)
+        graph[src][dst] = log(1/rate)
 
 for src in symbols:
     print "source %s ..." % (src),
-    distances,predecessors,has_negative_weight_cycle = bellman_ford(graph,src)
-    if has_negative_weight_cycle:
-        print " has negative weight cycle"
+    distances,predecessors,cycle = bellman_ford(graph,src)
+    if cycle is not None:
+        print negative_weight_cycle(predecessors,cycle)
     else:
-        print " does not have negative weight cycle"
-    """
-        continue
+        print " does not have a negative weight cycle"
         for dst in distances:
-            if dst == src or distances[dst] == float('inf'):
+            if src == dst or distances[dst] == float('inf'):
                 continue
-            path = find_path(predecessors,src,dst)
-            print path
-    """
+            print find_path(predecessors,src,dst)

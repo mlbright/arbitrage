@@ -24,7 +24,7 @@ def negative_weight_cycle(predecessor,end):
     while True:
         path.append(end)
         if path.count(end) > 1:
-            #path = path[path.index(end):]
+            path = path[path.index(end):]
             path.reverse()
             path = path[path.index(end):]
             return path 

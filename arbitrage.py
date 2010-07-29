@@ -47,7 +47,6 @@ for src in symbols:
         print negative_weight_cycle(predecessors,cycle_vertex)
         sys.exit()
     else:
-        # debugging stuff, delete this
         print " does not have a negative weight cycle"
         for dst in distances:
             if src == dst or distances[dst] == float('inf'):

@@ -35,8 +35,9 @@ def bellman_ford(graph, source):
     for u in graph:
         for v in graph[u]:
             if d[v] > d[u] + graph[u][v]:
-                relax(u, v, graph, d, p)
-                start = v
+                #relax(u, v, graph, d, p)
+                start = u
+                return d,p,start
     return d,p,start
 
 def test():

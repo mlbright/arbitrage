@@ -20,3 +20,5 @@ After |V| - 1 relaxations, all paths from the source to each vertex are guarante
 to be fixed, if there is no negative weight cycle. However, supposing
 after |V| relaxations, the distance value for a vertex v has decreased,
 then a negative weight cycle starts and ends at v.
+
+Is there anything wrong with this logic?

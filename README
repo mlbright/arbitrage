@@ -12,3 +12,11 @@ problem in terms of the Bellman-Ford algorithm, it is to:
 
 - detect the existence of a negative weight cycle in the currency graph
 - produce the path of any (not all) negative weight cycle in the graph
+
+Negative weight cycle is determined by doing an extra relaxation step
+after |V| - 1 relaxation steps.
+
+After |V| - 1 relaxations, all paths from the source to each vertex are guaranteed
+to be fixed, if there is no negative weight cycle. However, supposing
+after |V| relaxations, the distance value for a vertex v has decreased,
+then a negative weight cycle starts and ends at v.

@@ -24,8 +24,10 @@ def negative_weight_cycle(predecessor,end):
     while True:
         path.append(end)
         if path.count(end) > 1:
+            path = path[path.index(end):]
             path.reverse()
-            return path
+            path = path[path.index(end):]
+            return path 
         end = predecessor[end]
 
 symbols = set()
@@ -39,11 +41,12 @@ for line in sys.stdin:
         graph[src][dst] = log(1/rate)
 
 for src in symbols:
-    print "source %s ..." % (src),
-    distances,predecessors,cycle = bellman_ford(graph,src)
-    if cycle is not None:
-        print negative_weight_cycle(predecessors,cycle)
+    distances,predecessors,cycle_vertex = bellman_ford(graph,src)
+    if cycle_vertex is not None:
+        print negative_weight_cycle(predecessors,cycle_vertex)
+        sys.exit()
     else:
+        # debugging stuff, delete this
         print " does not have a negative weight cycle"
         for dst in distances:
             if src == dst or distances[dst] == float('inf'):

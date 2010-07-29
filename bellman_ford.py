@@ -30,9 +30,12 @@ def bellman_ford(graph, source):
         for u in graph:
             for v in graph[u]:
                 relax(u, v, graph, d, p)
+    # one more relaxation to find negative weight cycle
     for u in graph:
         for v in graph[u]:
             if d[v] > d[u] + graph[u][v]:
+                d[v] = d[u] + graph[u][v]
+                p[v] = u
                 return d,p,v
     return d,p,None
 

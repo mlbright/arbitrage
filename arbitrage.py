@@ -24,7 +24,7 @@ def negative_weight_cycle(predecessor,end):
     while True:
         path.append(end)
         if path.count(end) > 1:
-            path = path[path.index(end):]
+            #path = path[path.index(end):]
             path.reverse()
             path = path[path.index(end):]
             return path 
@@ -43,6 +43,7 @@ for line in sys.stdin:
 for src in symbols:
     distances,predecessors,cycle_vertex = bellman_ford(graph,src)
     if cycle_vertex is not None:
+        print cycle_vertex
         print negative_weight_cycle(predecessors,cycle_vertex)
         sys.exit()
     else:

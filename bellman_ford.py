@@ -26,6 +26,7 @@ def relax(u, v, graph, d, p):
 
 def bellman_ford(graph, source):
     d, p = initialize(graph, source)
+    start = None
     for i in range(len(graph)-1):
         for u in graph:
             for v in graph[u]:
@@ -34,10 +35,14 @@ def bellman_ford(graph, source):
     for u in graph:
         for v in graph[u]:
             if d[v] > d[u] + graph[u][v]:
+                relax(u, v, graph, d, p)
+                start = v
+                """
                 d[v] = d[u] + graph[u][v]
                 p[v] = u
                 return d,p,v
-    return d,p,None
+                """
+    return d,p,start
 
 def test():
 

@@ -10,5 +10,5 @@ Algorithms", by Cormen, Leiserson, Rivest, Stein,
 in its chapter on the single-source shortest paths problem. To explain the
 problem in terms of the Bellman-Ford algorithm, it is to:
 
-- detect the existence of a negative cycle in the currency graph
-- produce the path of a cycle (any cycle, not all cycles)
+- detect the existence of a negative weight cycle in the currency graph
+- produce the path of any (not all) negative weight cycle in the graph

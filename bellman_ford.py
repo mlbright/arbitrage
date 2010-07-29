@@ -33,10 +33,8 @@ def bellman_ford(graph, source):
     for u in graph:
         for v in graph[u]:
             if d[v] > d[u] + graph[u][v]:
-                d[v] = -float('inf')
-                p[v] = u
-                return d,p
-    return d,p
+                return d,p,False
+    return d,p,True
 
 def test():
 
@@ -48,7 +46,7 @@ def test():
         'e': {'d': -3}
         }
     
-    d, p = bellman_ford(graph, 'a')
+    d, p, _ = bellman_ford(graph, 'a')
     
     assert d == {
         'a':  0,

@@ -54,7 +54,7 @@ def get_exchange_rate(src, dst, api_key):
         result = url.read()
         return result.strip()
     except IOError,e:
-        print "could not get rate for %s => %s" % (a,b)
+        # print to stderr here
         return None
 
 symbols = []
